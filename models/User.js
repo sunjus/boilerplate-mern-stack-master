@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const saltRounds = 10; //salt10자리
+var jwt = require("jsonwebtoken");
 
 const userSchema = mongoose.Schema({
   name: {
@@ -67,7 +68,24 @@ userSchema.methods.comparePassword = function (plainPassword, cb) {
   //this.password는 위에 userSchema에 있는 password
   bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
     if (err) return cb(err);
+    //콜백 true 란 말. 트루면 index.js
     cb(null, isMatch);
+  });
+};
+
+userSchema.methods.generateToken = function (cb) {
+  var user = this;
+  //jsonwebtoken을 이용해서 token을 생성하기
+  var token = jwt.sign(user._id.toHexString(), "secretToken");
+
+  //user._id + 'secretToken' = token
+  //=>
+  //'secretToken' => user._id
+
+  user.token = token;
+  user.save(function (err, user) {
+    if (err) return cb(err);
+    cb(null, user);
   });
 };
 

@@ -4,12 +4,15 @@ const port = 5000;
 const config = require("./config/key");
 
 const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
+
 const { User } = require("./models/User");
 
 //application/x-www-form-urlencoded 로 생긴 client정보를 처리
 app.use(bodyParser.urlencoded({ extended: true }));
 //application.json 정보를 처리
 app.use(bodyParser.json());
+app.use(cookieParser());
 
 const mongoose = require("mongoose");
 mongoose
@@ -41,23 +44,32 @@ app.post("/register", (req, res) => {
   });
 });
 
-app.post(".login", (req, res) => {
+app.post("/login", (req, res) => {
   //요청된 이메일을 데이터베이스에서 있는지 찾기
   //몽고디비에서 제공하는 메서드인 findOne을 이용함
   User.findOne({ email: req.body.email }, (err, user) => {
-    if (!user) {
+    if (!user)
       return res.json({
         loginSuccess: false,
-        message: "Not valid email",
+        message: "Auth failed, email not found",
       });
-    }
-  });
-  //이멜이 있다면 비번이 맞는지 확인
-  //메소드는 models/user.js에서 만들면됨
-  user.comparePassword(req.body.password, (err, isMatch) => {
-    if (!isMatch)
-      return res.json({ loginSuccess: false, message: "Wrong password" });
-    //비번이 맞다면 유저를 위한 토큰을 생성해야 함
+    //이멜이 있다면 비번이 맞는지 확인
+    //메소드는 models/user.js에서 만들면됨
+    user.comparePassword(req.body.password, (err, isMatch) => {
+      if (!isMatch)
+        return res.json({ loginSuccess: false, message: "Wrong password" });
+
+      //비번이 맞다면 유저를 위한 토큰을 생성해야 함
+      user.generateToken((err, user) => {
+        if (err) return res.status(400).send(err);
+
+        //토큰을 저장한다. 어디에? 쿠기, 로컬스토리지..여기선 쿠기에 저장하는 방법으로.npm install cookie-parser --save
+        res
+          .cookie("x_auth", user.token)
+          .status(200)
+          .json({ loginSuccess: true, userId: user._id });
+      });
+    });
   });
 });
 
