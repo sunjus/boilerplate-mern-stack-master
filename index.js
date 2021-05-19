@@ -41,6 +41,26 @@ app.post("/register", (req, res) => {
   });
 });
 
+app.post(".login", (req, res) => {
+  //요청된 이메일을 데이터베이스에서 있는지 찾기
+  //몽고디비에서 제공하는 메서드인 findOne을 이용함
+  User.findOne({ email: req.body.email }, (err, user) => {
+    if (!user) {
+      return res.json({
+        loginSuccess: false,
+        message: "Not valid email",
+      });
+    }
+  });
+  //이멜이 있다면 비번이 맞는지 확인
+  //메소드는 models/user.js에서 만들면됨
+  user.comparePassword(req.body.password, (err, isMatch) => {
+    if (!isMatch)
+      return res.json({ loginSuccess: false, message: "Wrong password" });
+    //비번이 맞다면 유저를 위한 토큰을 생성해야 함
+  });
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });

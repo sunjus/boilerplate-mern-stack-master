@@ -62,6 +62,15 @@ userSchema.pre("save", function (next) {
   }
 });
 
+userSchema.methods.comparePassword = function (plainPassword, cb) {
+  //plainpassword는 유저가 입력한 번호, 암호화된 비번은 몽고디비에서 암호화되어 표시된 비번
+  //this.password는 위에 userSchema에 있는 password
+  bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
+
 const User = mongoose.model("User", userSchema); //()에 모델에 이름과 스키마 넣어주기
 
 module.exports = { User };
