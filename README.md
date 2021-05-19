@@ -14,3 +14,11 @@ npm install body-parser --save
 
 ## 아직 clinet side가 없으니 server code 가 잘 작동하는지 테스트해보는 postman을 이용할 것.
 post,get 잘 설정하자 postman에서.
+
+## nodemon은 입력변경사항이 있을 때 npm start를 매번 재실행 하지 않고도  페이지 변경사항을 보여주는 것.
+npm install nodemon --save-dev 
+-dev를 붙이면 개발할때만 쓰고 배포하곤 안쓴단얘기
+
+## config 폴더 생성
+몽고디비 비번 등 정보보호가 필요한 코드를 커밋방지하기 위해서
+그리고 나중에 헤로쿠 디플로이 할때를 대비해 prod 파일도 생성
