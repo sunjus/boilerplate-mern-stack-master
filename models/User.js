@@ -1,4 +1,6 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const saltRounds = 10; //salt10자리
 
 const userSchema = mongoose.Schema({
   name: {
@@ -32,6 +34,32 @@ const userSchema = mongoose.Schema({
     //토큰유효기간
     type: Number,
   },
+});
+
+userSchema.pre("save", function (next) {
+  //아래 코드는 https://www.npmjs.com/package/bcrypt 에서 가져와 변경한다
+  var user = this;
+  //비밀번호를 암호화시킨다. 비번이 변경될 때를 대비해
+  if (user.isModified("password")) {
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+      if (err) return next(err);
+      // Store hash in your password DB.
+      bcrypt.hash(user.password, salt, function (err, hash) {
+        if (err) return next(err);
+        user.password = hash;
+        next();
+      });
+    });
+  } else {
+    //비번변경이 없다면 바로 다름으로 빠져나가기.
+    //index.js 파일에 user.save((err, userInfo) => {
+    //if (err) return res.json({ success: false, err });
+    //return res.status(200).json({
+    //   success: true,
+    // });
+    //}); 여기로 가게 되는 것임
+    next();
+  }
 });
 
 const User = mongoose.model("User", userSchema); //()에 모델에 이름과 스키마 넣어주기
