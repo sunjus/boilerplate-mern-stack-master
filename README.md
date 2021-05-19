@@ -7,3 +7,10 @@
 내 컴에 SSH 가 있는지 확인하는 방법은 터미널에서  ls -a ~/.ssh 쳐보면 된다.
 나는 작년 10월에 설치했구나. 몰랐다.
 
+
+## body-parser 라는 dependency를 사용해서 
+client side 에서 보내주는  user name, password, email 등을 server에서 받을 수 있다.
+npm install body-parser --save
+
+## 아직 clinet side가 없으니 server code 가 잘 작동하는지 테스트해보는 postman을 이용할 것.
+post,get 잘 설정하자 postman에서.
