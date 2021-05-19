@@ -22,3 +22,11 @@ npm install nodemon --save-dev
 ## config 폴더 생성
 몽고디비 비번 등 정보보호가 필요한 코드를 커밋방지하기 위해서
 그리고 나중에 헤로쿠 디플로이 할때를 대비해 prod 파일도 생성
+
+## 유저 비번을 암호화 해주기 (https://www.npmjs.com/package/bcrypt)
+npm install bcrypt --save
+
+## 비번이 맞다면 유저를 위한 웹토큰을 생성해주기 (https://www.npmjs.com/package/jsonwebtoken)
+npm install jsonwebtoken --save
+유저 웹토큰을 잠깐 쿠키에 저장해줄 때 쓸
+npm install cookie-parser --save
