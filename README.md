@@ -31,7 +31,7 @@ npm install jsonwebtoken --save
 유저 웹토큰을 잠깐 쿠키에 저장해줄 때 쓸
 npm install cookie-parser --save
 
-## cors 정책 => req, res에 프론트, 서버의 포트가 다른 경우 에러 => proxy 로 해결
+## cors 정책 => req, res에 프론트, 서버의 포트가 다른 경우 에러 => proxy 로 해결 (https://create-react-app.dev/docs/proxying-api-requests-in-development/)
 프론트는 3000, 서버는 5000 같이 포트가 다를 경우.  data를 주고 받을 때 cors 정책에 걸린다.
 Cors 정책은 보안을 위한것. cross-origin resource sharing
 proxy를 이용해서 해결하기
