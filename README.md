@@ -31,7 +31,16 @@ npm install jsonwebtoken --save
 유저 웹토큰을 잠깐 쿠키에 저장해줄 때 쓸
 npm install cookie-parser --save
 
+
+--요기부터 client -------------------------------------------------
+
+
 ## cors 정책 => req, res에 프론트, 서버의 포트가 다른 경우 에러 => proxy 로 해결 (https://create-react-app.dev/docs/proxying-api-requests-in-development/)
 프론트는 3000, 서버는 5000 같이 포트가 다를 경우.  data를 주고 받을 때 cors 정책에 걸린다.
 Cors 정책은 보안을 위한것. cross-origin resource sharing
 proxy를 이용해서 해결하기
+
+## 프로트. 서버 한꺼번에 run start하려면 npm install concurrently --save 깔면 됨
+"dev": "concurrently \"npm run backend\" \"npm run start --prefix client\"" 루트 제이슨파일에 입력하고 터미널에서 npm run dev로 앱시작하면 됨
+
+## 리액트 상태관리는 redux로 npm install redux react-redux redux-promise redux-thunk --save
