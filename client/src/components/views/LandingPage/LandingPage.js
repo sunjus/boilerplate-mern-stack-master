@@ -6,6 +6,16 @@ const LandingPage = (props) => {
     axios.get("/api/hello").then((res) => console.log(res.data));
   }, []);
 
+  const onClickHandler = () => {
+    axios.get(`/api/users/logout`).then((response) => {
+      if (response.data.success) {
+        props.history.push("/login");
+      } else {
+        alert("Failed to logout");
+      }
+    });
+  };
+
   return (
     <div
       style={{
@@ -17,6 +27,7 @@ const LandingPage = (props) => {
       }}
     >
       landing
+      <button onClick={onClickHandler}>Logout</button>
     </div>
   );
 };
